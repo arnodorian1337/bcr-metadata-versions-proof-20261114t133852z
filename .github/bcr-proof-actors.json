@@ -1,0 +1,10 @@
+{
+  "automation_id": 101593810,
+  "automation_login": "asdstazotasdtest1",
+  "bcr_base_sha": "ad578efb66cf006c54091629dc4b3c9412b03b27",
+  "reviewer_sha": "d1c4eb730271188868ab8d934df3a1507c0b07eb",
+  "target_repo": "staz0t/bcr-metadata-versions-proof-20261114t133852z",
+  "validator_sha": "5449a7683977378f1da885c2c4b254dbaf995d04",
+  "victim_id": 26545664,
+  "victim_login": "staz0t"
+}

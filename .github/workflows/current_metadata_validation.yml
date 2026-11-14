@@ -1,0 +1,36 @@
+name: Current BCR metadata validation
+on:
+  pull_request:
+    branches: [main]
+    paths: ['modules/**']
+
+permissions:
+  contents: read
+
+jobs:
+  metadata_validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the exact PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          repository: ${{ github.event.pull_request.head.repo.full_name }}
+          path: registry
+          persist-credentials: false
+      - name: Check out the current BCR validator
+        uses: actions/checkout@v4
+        with:
+          repository: bazelbuild/bazel-central-registry
+          ref: 5449a7683977378f1da885c2c4b254dbaf995d04
+          path: validator-source
+          sparse-checkout: tools
+          persist-credentials: false
+      - name: Run the exact current metadata validator
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 -m pip install --disable-pip-version-check requests PyYAML zstandard
+          export PYTHONPATH="$GITHUB_WORKSPACE/validator-source/tools"
+          python3 "$GITHUB_WORKSPACE/validator-source/tools/bcr_validation.py"             --registry "$GITHUB_WORKSPACE/registry"             --check_metadata fmt
